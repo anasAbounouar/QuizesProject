@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import q from "@/data/quizes.json";
 import { ref, watch } from "vue";
-import Card from "../components/Card.vue";
+import Card from "@/components/Card.vue";
 // import gsap from "gsap";
 
 const quizes = ref(q);
