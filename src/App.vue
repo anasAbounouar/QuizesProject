@@ -6,6 +6,9 @@ import { RouterView } from "vue-router";
     <RouterView />
 </template>
 
-<style scoped>
-
+<style>
+#app {
+    max-width: 1100px;
+    margin: auto;
+}
 </style>

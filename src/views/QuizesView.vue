@@ -2,36 +2,19 @@
 import { ref, watch } from "vue";
 import type { Ref } from "vue";
 import Card from "@/components/Card.vue";
+import QuizHeader from "@/components/QuizHeader.vue";
 // import gsap from "gsap";
 
 // Assuming q is an array of quizzes
 import q from "@/data/quizes.json";
-
-interface QuizOption {
-    id: number;
-    label: string;
-    text: string;
-    isCorrect: boolean;
-}
-
-interface QuizQuestion {
-    id: number;
-    text: string;
-    options: QuizOption[];
-}
-
-interface Quiz {
-    id: number;
-    img: string;
-    name: string;
-    questions: QuizQuestion[];
-}
+import { type Quiz } from "@/modules/format";
 
 // Define 'quizes' as a reactive reference to the imported quiz data
 const quizes: Ref<Quiz[]> = ref(q);
 
 // Define 'search' as a reactive string reference
 const search: Ref<string> = ref("");
+    
 
 // Watch for changes in 'search' and filter the quizzes accordingly
 watch(search, () => {
@@ -57,10 +40,7 @@ watch(search, () => {
 
 <template>
     <div class="container p-5 m-auto">
-        <header>
-            <h1>Quizes</h1>
-            <input v-model.trim="search" type="text" placeholder="Search..." />
-        </header>
+        <QuizHeader />
         <div class="options-container">
             <!-- <TransitionGroup @before-enter="beforeEnter" @enter="enter" appear> -->
             <Card v-for="(quiz, index) in quizes" :key="quiz.id" :quiz="quiz" :data-index="index" />
