@@ -1,48 +1,70 @@
 <script lang="ts" setup>
-import q from "@/data/quizes.json";
 import { ref, watch } from "vue";
+import type { Ref } from "vue";
 import Card from "@/components/Card.vue";
 // import gsap from "gsap";
 
-const quizes = ref(q);
-const search = ref("");
+// Assuming q is an array of quizzes
+import q from "@/data/quizes.json";
 
+interface QuizOption {
+    id: number;
+    label: string;
+    text: string;
+    isCorrect: boolean;
+}
+
+interface QuizQuestion {
+    id: number;
+    text: string;
+    options: QuizOption[];
+}
+
+interface Quiz {
+    id: number;
+    img: string;
+    name: string;
+    questions: QuizQuestion[];
+}
+
+// Define 'quizes' as a reactive reference to the imported quiz data
+const quizes: Ref<Quiz[]> = ref(q);
+
+// Define 'search' as a reactive string reference
+const search: Ref<string> = ref("");
+
+// Watch for changes in 'search' and filter the quizzes accordingly
 watch(search, () => {
-    quizes.value = q.filter((quiz) => {
-        quiz.name.toLowerCase.includes(search.value.toLowerCase);
-    });
+    quizes.value = q.filter((quiz) => quiz.name.toLowerCase().includes(search.value.toLowerCase()));
 });
 
-const beforeEnter = (el) => {
-    el.style.transform = "translateY(-60px)";
-    el.style.opacity = 0;
-};
+// Uncomment and use these functions where necessary
+// const beforeEnter = (el) => {
+//     el.style.transform = "translateY(-60px)";
+//     el.style.opacity = 0;
+// };
 
-const enter = (el) => {
-    gsap.to(el, {
-        duration: 1,
-        y: 0,
-        opacity: 1,
-        delay: el.dataset.index * 0.2,
-    });
-};
+// const enter = (el, done) => {
+//     gsap.to(el, {
+//         duration: 1,
+//         y: 0,
+//         opacity: 1,
+//         delay: el.dataset.index * 0.2,
+//         onComplete: done,
+//     });
+// };
 </script>
 
 <template>
-    <div>
+    <div class="container p-5 m-auto">
         <header>
             <h1>Quizes</h1>
             <input v-model.trim="search" type="text" placeholder="Search..." />
         </header>
         <div class="options-container">
-            <TransitionGroup @before-enter="beforeEnter" @enter="enter" appear>
-                <Card
-                    v-for="(quiz, index) in quizes"
-                    :key="quiz.id"
-                    :quiz="quiz"
-                    :data-index="index"
-                />
-            </TransitionGroup>
+            <!-- <TransitionGroup @before-enter="beforeEnter" @enter="enter" appear> -->
+            <Card v-for="(quiz, index) in quizes" :key="quiz.id" :quiz="quiz" :data-index="index" />
+            <!-- </TransitionGroup> -->
         </div>
     </div>
 </template>

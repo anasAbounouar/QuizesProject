@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script lang="ts" setup>
-import { defineProps } from "vue";
+// import { defineProps } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();

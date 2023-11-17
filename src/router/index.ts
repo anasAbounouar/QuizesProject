@@ -7,6 +7,19 @@ const router = createRouter({
             path: "/",
             component: () => import("@/views/QuizesView.vue"),
         },
+        {
+            path: "/home",
+            redirect: "/",
+        },
+        {
+            path: "/:pathMatch(.*)*",
+            name: "note found",
+            component: () => import("@/views/PageNotFoundView.vue"),
+        },
+        {
+            path: "/quiz/:id",
+            component: () => import("@/views/QuizView.vue"),
+        },
     ],
 });
 
