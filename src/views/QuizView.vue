@@ -2,8 +2,17 @@
     <div>
         <QuizHeader :questionStatus="questionStatus" :barPercentage="barPercentage" />
         <div>
-            <Question :question="quiz?.questions[currentQuestionIndex]" />
-            <button @click.prevent="currentQuestionIndex++">next</button>
+            <Question
+                :question="quiz?.questions[currentQuestionIndex]"
+                @selectOption="onOptionSelected"
+            />
+            <button
+                @click.prevent="
+                    currentQuestionIndex < 3 ? currentQuestionIndex++ : currentQuestionIndex
+                "
+            >
+                next
+            </button>
             <Result />
         </div>
     </div>
@@ -34,6 +43,9 @@ const questionStatus: ComputedRef<string | void> = computed(() => {
     }
     return console.log("error in currentQuestionIndex");
 });
+const onOptionSelected = (isCorrect: boolean) => {
+    console.log("emmited", isCorrect);
+};
 console.log(questionStatus.value);
 const barPercentage = computed(() => {
     if (quiz && quiz.questions) {
