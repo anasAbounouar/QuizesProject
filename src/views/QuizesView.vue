@@ -2,8 +2,8 @@
 import { ref, watch } from "vue";
 import type { Ref } from "vue";
 import Card from "@/components/Card.vue";
-import QuizHeader from "@/components/QuizHeader.vue";
-// import gsap from "gsap";
+
+import gsap from "gsap";
 
 // Assuming q is an array of quizzes
 import q from "@/data/quizes.json";
@@ -14,7 +14,6 @@ const quizes: Ref<Quiz[]> = ref(q);
 
 // Define 'search' as a reactive string reference
 const search: Ref<string> = ref("");
-    
 
 // Watch for changes in 'search' and filter the quizzes accordingly
 watch(search, () => {
@@ -22,29 +21,37 @@ watch(search, () => {
 });
 
 // Uncomment and use these functions where necessary
-// const beforeEnter = (el) => {
-//     el.style.transform = "translateY(-60px)";
-//     el.style.opacity = 0;
-// };
+const beforeEnter = (el) => {
+    el.style.transform = "translateY(-60px)";
+    el.style.opacity = 0;
+};
 
-// const enter = (el, done) => {
-//     gsap.to(el, {
-//         duration: 1,
-//         y: 0,
-//         opacity: 1,
-//         delay: el.dataset.index * 0.2,
-//         onComplete: done,
-//     });
-// };
+const enter = (el, done) => {
+    gsap.to(el, {
+        duration: 1,
+        y: 0,
+        opacity: 1,
+        delay: el.dataset.index * 0.2,
+        onComplete: done,
+    });
+};
 </script>
 
 <template>
     <div class="container p-5 m-auto">
-        <QuizHeader />
+        <header>
+            <h1>Quizes</h1>
+            <input v-model.trim="search" type="text" placeholder="Search..." />
+        </header>
         <div class="options-container">
-            <!-- <TransitionGroup @before-enter="beforeEnter" @enter="enter" appear> -->
-            <Card v-for="(quiz, index) in quizes" :key="quiz.id" :quiz="quiz" :data-index="index" />
-            <!-- </TransitionGroup> -->
+            <TransitionGroup @before-enter="beforeEnter" @enter="enter" appear>
+                <Card
+                    v-for="(quiz, index) in quizes"
+                    :key="quiz.id"
+                    :quiz="quiz"
+                    :data-index="index"
+                />
+            </TransitionGroup>
         </div>
     </div>
 </template>

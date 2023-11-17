@@ -3,22 +3,22 @@
         <QuizHeader :questionStatus="questionStatus" :barPercentage="barPercentage" />
         <div>
             <Question
+                v-if="!showResults"
                 :question="quiz?.questions[currentQuestionIndex]"
                 @selectOption="onOptionSelected"
             />
-            <button
-                @click.prevent="
-                    currentQuestionIndex < 3 ? currentQuestionIndex++ : currentQuestionIndex
-                "
-            >
-                next
-            </button>
-            <Result />
+            <Result
+                v-if="showResults"
+                :quizQuestionLength="quizQuestionLength"
+                :numberOfCorrectAnswers="numberOfCorrectAnswers"
+                class="p-0"
+            />
         </div>
     </div>
 </template>
 <script lang="ts" setup>
 import QuizHeader from "@/components/QuizHeader.vue";
+import Result from "@/components/Result.vue";
 import { useRoute } from "vue-router";
 import { ref, computed } from "vue";
 import Question from "@/components/Question.vue";
@@ -32,8 +32,7 @@ const route = useRoute();
 const quizId: number = parseInt(route.params.id[0]);
 
 const quiz: Quiz | undefined = q.find((quiz) => quiz.id === quizId);
-console.log(quiz);
-
+const quizQuestionLength: number | undefined = quiz?.questions.length;
 const currentQuestionIndex: Ref<number> = ref(0);
 console.log(currentQuestionIndex.value);
 
@@ -43,8 +42,17 @@ const questionStatus: ComputedRef<string | void> = computed(() => {
     }
     return console.log("error in currentQuestionIndex");
 });
+const showResults = ref(false);
+const numberOfCorrectAnswers = ref(0);
 const onOptionSelected = (isCorrect: boolean) => {
-    console.log("emmited", isCorrect);
+    if (isCorrect) {
+        numberOfCorrectAnswers.value++;
+    }
+    if (quiz && quiz?.questions?.length - 1 === currentQuestionIndex.value) {
+        showResults.value = true;
+        return;
+    }
+    return currentQuestionIndex.value++;
 };
 console.log(questionStatus.value);
 const barPercentage = computed(() => {

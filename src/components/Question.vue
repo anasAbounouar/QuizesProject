@@ -2,7 +2,7 @@
 <script lang="ts" setup>
 import { defineProps, defineEmits } from "vue";
 import { type Quiz } from "@/modules/format";
-import { ref } from "vue";
+// import { ref } from "vue";
 const emit = defineEmits(["selectOption"]);
 
 const emitSelectedOption = (isCorrect: boolean): void => {
@@ -14,14 +14,7 @@ console.log(emit);
 
 const { question }: { question?: Quiz } = defineProps(["question"]);
 
-let trueCount = ref(0);
 
-const check = (bol: boolean) => {
-    if (bol === true) {
-        return trueCount.value++;
-    }
-    return;
-};
 </script>
 
 <template>
@@ -42,7 +35,6 @@ const check = (bol: boolean) => {
                 <p>{{ option.text }}</p>
             </div>
         </div>
-        <div>{{ trueCount }}</div>
     </div>
 </template>
 
